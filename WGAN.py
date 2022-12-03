@@ -186,7 +186,8 @@ for epoch in range(EPOCHS):
 		# Train Critic
 		fake_out = critic(x_fake.detach())
 		real_out = critic(x_real.detach())
-		d_loss = -(real_out.mean() - fake_out.mean())
+		x_out = torch.cat((real_out, fake_out))
+		d_loss = -(real_out.mean() - fake_out.mean()) + (x_out ** 2).mean() * 0.0001
 
 		c_opt.zero_grad()
 		d_loss.backward()
